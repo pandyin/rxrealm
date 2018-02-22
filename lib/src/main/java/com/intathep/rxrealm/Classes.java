@@ -1,4 +1,4 @@
-package com.intathep.lib;
+package com.intathep.rxrealm;
 
 import com.squareup.javapoet.ClassName;
 

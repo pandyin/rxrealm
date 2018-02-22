@@ -1,4 +1,4 @@
-package com.intathep.lib;
+package com.intathep.rxrealm;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
