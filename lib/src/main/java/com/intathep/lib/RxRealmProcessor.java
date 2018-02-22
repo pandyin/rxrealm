@@ -1,4 +1,4 @@
-package com.intathep.android.lib;
+package com.intathep.lib;
 
 import com.google.auto.service.AutoService;
 
@@ -24,10 +24,6 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
-
-/**
- * Created by pan on 11/10/16.
- */
 
 @AutoService(Processor.class)
 public class RxRealmProcessor extends AbstractProcessor {

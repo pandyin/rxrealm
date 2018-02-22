@@ -1,4 +1,4 @@
-package com.intathep.android.lib;
+package com.intathep.lib;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

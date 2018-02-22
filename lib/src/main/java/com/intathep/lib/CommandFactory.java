@@ -1,4 +1,4 @@
-package com.intathep.android.lib;
+package com.intathep.lib;
 
 import com.squareup.javapoet.ArrayTypeName;
 import com.squareup.javapoet.ClassName;

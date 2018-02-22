@@ -1,12 +1,12 @@
-package com.intathep.android.lib;
+package com.intathep.lib;
 
 import javax.lang.model.element.Element;
 
 public class ProcessingException extends Exception {
 
-    Element element;
+    private Element element;
 
-    public ProcessingException(Element element, String msg, Object... args) {
+    protected ProcessingException(Element element, String msg, Object... args) {
         super(String.format(msg, args));
         this.element = element;
     }

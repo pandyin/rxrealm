@@ -1,4 +1,4 @@
-package com.intathep.android.lib;
+package com.intathep.lib;
 
 import com.squareup.javapoet.ArrayTypeName;
 import com.squareup.javapoet.ClassName;
@@ -40,7 +40,7 @@ public class RxRealmFactory {
         this.annotatedElement = annotatedElement;
     }
 
-    public Element getAnnotatedElement() {
+    protected Element getAnnotatedElement() {
         return annotatedElement;
     }
 
@@ -114,7 +114,7 @@ public class RxRealmFactory {
                 .addModifiers(Modifier.PUBLIC)
                 .returns(ParameterizedTypeName.get(Classes.OBSERVABLE, annotatedClass))
                 .addStatement("final $T asyncSubject = $T.create()", ParameterizedTypeName.get(Classes.ASYNC_SUBJECT, annotatedClass), Classes.ASYNC_SUBJECT)
-                .addCode("if ($T.isUiThread()) {", Classes.UTILITIES)
+                .addCode("if ($T.isUiThread()) {", Classes.THREADS)
                 .addStatement("\n$T temp = null", Classes.REALM)
                 .addCode("try {")
                 .addStatement("\n$N = $T.getRealmInstance()", "temp", Classes.REALM_LOGGER)
@@ -309,7 +309,7 @@ public class RxRealmFactory {
                 .addModifiers(Modifier.PUBLIC)
                 .returns(ParameterizedTypeName.get(Classes.OBSERVABLE, ClassName.get(Boolean.class)))
                 .addStatement("final $T asyncSubject = $T.create()", ParameterizedTypeName.get(Classes.ASYNC_SUBJECT, ClassName.get(Boolean.class)), Classes.ASYNC_SUBJECT)
-                .addCode("if ($T.isUiThread()) {", Classes.UTILITIES)
+                .addCode("if ($T.isUiThread()) {", Classes.THREADS)
                 .addStatement("\n$T temp = null", Classes.REALM)
                 .addCode("try {")
                 .addStatement("\n$N = $T.getRealmInstance()", "temp", Classes.REALM_LOGGER)
@@ -418,7 +418,7 @@ public class RxRealmFactory {
                 .addParameter(ParameterizedTypeName.get(Classes.REALM_QUERY, annotatedClass), "realmQuery")
                 .returns(ParameterizedTypeName.get(Classes.OBSERVABLE, ParameterizedTypeName.get(Classes.REALM_RESULTS, annotatedClass)))
                 .addCode("if ($N.size() > 0) {", "sortFields")
-                .addCode("\nif ($T.isUiThread()) {", Classes.UTILITIES)
+                .addCode("\nif ($T.isUiThread()) {", Classes.THREADS)
                 .addStatement("\nreturn $N.findAllSortedAsync($N.keySet().toArray(new String[$N.size()]), " +
                                 "$N.values().toArray(new Sort[$N.size()]))" +
                                 ".<$N>asObservable().filter($T.filterValidRealmResults())",
@@ -429,7 +429,7 @@ public class RxRealmFactory {
                         Classes.OBSERVABLE, "realmQuery", "sortFields", "sortFields", "sortFields", "sortFields")
                 .addCode("}")
                 .addCode("\n} else {")
-                .addCode("\nif ($T.isUiThread()) {", Classes.UTILITIES)
+                .addCode("\nif ($T.isUiThread()) {", Classes.THREADS)
                 .addStatement("\nreturn $N.findAllAsync()" +
                                 ".<$N>asObservable().filter($T.filterValidRealmResults())",
                         "realmQuery", className, Classes.REALM_UTIL)
@@ -510,7 +510,7 @@ public class RxRealmFactory {
                 .addModifiers(Modifier.PUBLIC)
                 .returns(ParameterizedTypeName.get(Classes.OBSERVABLE, ParameterizedTypeName.get(Classes.LIST, annotatedClass)))
                 .addStatement("final $T asyncSubject = $T.create()", ParameterizedTypeName.get(Classes.ASYNC_SUBJECT, ParameterizedTypeName.get(Classes.LIST, annotatedClass)), Classes.ASYNC_SUBJECT)
-                .addCode("if ($T.isUiThread()) {", Classes.UTILITIES)
+                .addCode("if ($T.isUiThread()) {", Classes.THREADS)
                 .addStatement("\n$T temp = null", Classes.REALM)
                 .addCode("try {")
                 .addStatement("\n$N = $T.getRealmInstance()", "temp", Classes.REALM_LOGGER)
@@ -609,7 +609,7 @@ public class RxRealmFactory {
                 .addModifiers(Modifier.PUBLIC)
                 .returns(ParameterizedTypeName.get(Classes.OBSERVABLE, ClassName.get(Boolean.class)))
                 .addStatement("final $T asyncSubject = $T.create()", ParameterizedTypeName.get(Classes.ASYNC_SUBJECT, ClassName.get(Boolean.class)), Classes.ASYNC_SUBJECT)
-                .addCode("if ($T.isUiThread()) {", Classes.UTILITIES)
+                .addCode("if ($T.isUiThread()) {", Classes.THREADS)
                 .addStatement("\n$T temp = null", Classes.REALM)
                 .addCode("try {")
                 .addStatement("\n$N = $T.getRealmInstance()", "temp", Classes.REALM_LOGGER)
@@ -689,7 +689,7 @@ public class RxRealmFactory {
                 .addModifiers(Modifier.PRIVATE)
                 .addParameter(ParameterizedTypeName.get(Classes.REALM_QUERY, annotatedClass), "realmQuery")
                 .returns(ParameterizedTypeName.get(Classes.OBSERVABLE, annotatedClass))
-                .addCode("if ($T.isUiThread()) {", Classes.UTILITIES)
+                .addCode("if ($T.isUiThread()) {", Classes.THREADS)
                 .addStatement("\nreturn $N.findFirstAsync().<$T>asObservable().filter($T.filterValidRealmObject())", "realmQuery", annotatedClass, Classes.REALM_UTIL)
                 .addCode("} else {")
                 .addStatement("\nreturn $T.just($N.findFirst())", Classes.OBSERVABLE, "realmQuery")
