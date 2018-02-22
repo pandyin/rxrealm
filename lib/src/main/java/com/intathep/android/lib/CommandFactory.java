@@ -15,8 +15,8 @@ import javax.lang.model.element.Modifier;
 
 public class CommandFactory {
 
-    protected static final String COMMAND_PACKAGE_NAME = "com.ekoapp.command";
-    protected static final String EXECUTOR_PACKAGE_NAME = "com.ekoapp.executor";
+    protected static final String COMMAND_PACKAGE_NAME = "com.intathep.android.rxrealm.command";
+    protected static final String EXECUTOR_PACKAGE_NAME = "com.intathep.android.rxrealm.executor";
     protected static final ClassName COMMAND = ClassName.get(COMMAND_PACKAGE_NAME, "Command");
     protected static final ClassName KEY_VALUE_COMMAND = ClassName.get(COMMAND_PACKAGE_NAME, "KeyValueCommand");
     protected static final ClassName KEY_VALUES_COMMAND = ClassName.get(COMMAND_PACKAGE_NAME, "KeyValuesCommand");

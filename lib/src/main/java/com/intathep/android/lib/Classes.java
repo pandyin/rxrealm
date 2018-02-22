@@ -27,11 +27,9 @@ public class Classes {
 
     public static final ClassName JSON_OBJECT = ClassName.get("org.json", "JSONObject");
 
-    public static final ClassName REALM_LOGGER = ClassName.get("com.ekoapp.App", "RealmLogger");
-    public static final ClassName REALM_UTIL = ClassName.get("com.ekoapp.eko.Utils", "RealmUtil");
-    public static final ClassName UTILITIES = ClassName.get("com.ekoapp.eko.Utils", "Utilities");
-    public static final ClassName MODEL_FILTERS = ClassName.get("com.ekoapp.common.model", "ModelFilters");
-    public static final ClassName BASE_OBSERVER = ClassName.get("com.ekoapp.common.rx", "BaseObserver");
+    public static final ClassName REALM_LOGGER = ClassName.get("com.intathep.android.rxrealm", "RealmLogger");
+    public static final ClassName REALM_UTIL = ClassName.get("com.intathep.android.rxrealm", "RealmUtil");
+    public static final ClassName THREADS = ClassName.get("com.intathep.android.rxrealm", "Threads");
 
     public static final ClassName OBSERVABLE = ClassName.get("rx", "Observable");
     public static final ClassName PUBLISH_SUBJECT = ClassName.get("rx.subjects", "PublishSubject");
