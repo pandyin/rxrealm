@@ -486,7 +486,7 @@ public class RxRealmFactory {
                 .addCode("$N.executeTransactionAsync(new $T.Transaction() {", "temp", Classes.REALM)
                 .addCode("\n@Override")
                 .addCode("\npublic void execute($T realm) {", Classes.REALM)
-                .addStatement("\n$N.onNext(get(applyCommandsToRealmQuery($N)).deleteAllFromRealm())", "asyncSubject", "realm")
+                .addStatement("\n$N.onNext(applyCommandsToRealmQuery($N).findAll().deleteAllFromRealm())", "asyncSubject", "realm")
                 .addCode("}")
                 .addCode("\n}, new $T.Transaction.OnSuccess() {", Classes.REALM)
                 .addCode("\n@Override")
@@ -508,7 +508,7 @@ public class RxRealmFactory {
                 .addCode("\n$T.executeTransaction(new $T.BetterTransaction() {", Classes.REALMS, Classes.REALMS)
                 .addCode("\n@Override")
                 .addCode("\npublic void execute($T realm) throws $T {", Classes.REALM, Classes.EXCEPTION)
-                .addStatement("\n$N.onNext(get(applyCommandsToRealmQuery($N)).deleteAllFromRealm())", "asyncSubject", "realm")
+                .addStatement("\n$N.onNext(applyCommandsToRealmQuery($N).findAll().deleteAllFromRealm())", "asyncSubject", "realm")
                 .addStatement("$N.onCompleted()", "asyncSubject")
                 .addCode("}")
                 .addStatement("\n})")
@@ -547,55 +547,6 @@ public class RxRealmFactory {
                 .addParameter(ParameterizedTypeName.get(Classes.REALM_QUERY, annotatedClass), "realmQuery")
                 .returns(Long.class)
                 .addStatement("return $N.count()", "realmQuery")
-                .build());
-
-        methodSpecs.add(MethodSpec.methodBuilder("get")
-                .addModifiers(Modifier.PRIVATE)
-                .addAnnotation(Classes.DEPRECATED)
-                .returns(ParameterizedTypeName.get(Classes.LIST, annotatedClass))
-                .addStatement("$T temp = null", Classes.REALM)
-                .addCode("try {")
-                .addStatement("\n$N = $T.get()", "temp", Classes.REALMS)
-                .addStatement("$T realmResults = get(applyCommandsToRealmQuery($N))",
-                        ParameterizedTypeName.get(Classes.REALM_RESULTS, annotatedClass),
-                        "temp")
-                .addStatement("$T copied = $T.newArrayList()",
-                        ParameterizedTypeName.get(Classes.LIST, annotatedClass),
-                        Classes.LISTS)
-                .addCode("if ($N.size() > 0) {", "realmResults")
-                .addStatement("\n$N.addAll($N.copyFromRealm($N))", "copied", "temp", "realmResults")
-                .addCode("}")
-                .addStatement("\nreturn $N", "copied")
-                .addCode("} catch ($T e) {", Classes.EXCEPTION)
-                .addStatement("\nreturn $T.newArrayList()", Classes.LISTS)
-                .addCode("} finally {")
-                .addStatement("\n$T.close($N)", Classes.REALMS, "temp")
-                .addCode("}\n")
-                .build());
-
-        methodSpecs.add(MethodSpec.methodBuilder("get")
-                .addModifiers(Modifier.PRIVATE)
-                .addAnnotation(Classes.DEPRECATED)
-                .addParameter(Classes.REALM, "realm")
-                .returns(ParameterizedTypeName.get(Classes.REALM_RESULTS, annotatedClass))
-                .addStatement("return get(applyCommandsToRealmQuery($N))", "realm")
-                .build());
-
-        methodSpecs.add(MethodSpec.methodBuilder("get")
-                .addModifiers(Modifier.PRIVATE)
-                .addAnnotation(Classes.DEPRECATED)
-                .addParameter(ParameterizedTypeName.get(Classes.REALM_QUERY, annotatedClass), "realmQuery")
-                .returns(ParameterizedTypeName.get(Classes.REALM_RESULTS, annotatedClass))
-                .addCode("if ($N.size() > 0) {", "sortFields")
-                .addStatement("\nreturn $N.findAllSorted($N.keySet().toArray(new String[$N.size()]), $N.values().toArray(new Sort[$N.size()]))",
-                        "realmQuery",
-                        "sortFields",
-                        "sortFields",
-                        "sortFields",
-                        "sortFields")
-                .addCode("} else {")
-                .addStatement("\nreturn $N.findAll()", "realmQuery")
-                .addCode("}\n")
                 .build());
 
         methodSpecs.add(MethodSpec.methodBuilder("getAsync")
@@ -869,7 +820,7 @@ public class RxRealmFactory {
                 .addStatement("\nreturn realmQuery")
                 .build());
 
-        methodSpecs.add(MethodSpec.methodBuilder("delete")
+        methodSpecs.add(MethodSpec.methodBuilder("deleteAsync")
                 .addModifiers(Modifier.PUBLIC)
                 .returns(ParameterizedTypeName.get(Classes.OBSERVABLE, ClassName.get(Boolean.class)))
                 .addStatement("final $T asyncSubject = $T.create()",
@@ -882,8 +833,7 @@ public class RxRealmFactory {
                 .addCode("$N.executeTransactionAsync(new $T.Transaction() {", "temp", Classes.REALM)
                 .addCode("\n@Override")
                 .addCode("\npublic void execute($T realm) {", Classes.REALM)
-                .addStatement("\nget(applyCommandsToRealmQuery($N)).deleteFromRealm()", "realm")
-                .addStatement("$N.onNext(true)", "asyncSubject")
+                .addStatement("\n$N.onNext(applyCommandsToRealmQuery($N).findAll().deleteAllFromRealm())", "asyncSubject", "realm")
                 .addCode("}")
                 .addCode("\n}, new $T.Transaction.OnSuccess() {", Classes.REALM)
                 .addCode("\n@Override")
@@ -905,48 +855,12 @@ public class RxRealmFactory {
                 .addCode("\n$T.executeTransaction(new $T.BetterTransaction() {", Classes.REALMS, Classes.REALMS)
                 .addCode("\n@Override")
                 .addCode("\npublic void execute($T realm) throws $T {", Classes.REALM, Classes.EXCEPTION)
-                .addStatement("\nget(applyCommandsToRealmQuery($N)).deleteFromRealm()", "realm")
-                .addStatement("$N.onNext(true)", "asyncSubject")
+                .addStatement("\n$N.onNext(applyCommandsToRealmQuery($N).findAll().deleteAllFromRealm())", "asyncSubject", "realm")
                 .addStatement("$N.onCompleted()", "asyncSubject")
                 .addCode("}")
                 .addStatement("\n})")
                 .addCode("}")
                 .addStatement("\nreturn $N", "asyncSubject")
-                .build());
-
-        methodSpecs.add(MethodSpec.methodBuilder("get")
-                .addAnnotation(Classes.NULLABLE)
-                .addModifiers(Modifier.PUBLIC)
-                .returns(annotatedClass)
-                .addStatement("$T temp = null", Classes.REALM)
-                .addCode("try {")
-                .addStatement("\n$N = $T.get()", "temp", Classes.REALMS)
-                .addStatement("$T realmObject = get(applyCommandsToRealmQuery($N))", annotatedClass, "temp")
-                .addStatement("$T copied = null", annotatedClass)
-                .addCode("if ($N != null) {", "realmObject")
-                .addStatement("\n$N = $N.copyFromRealm($N)", "copied", "temp", "realmObject")
-                .addCode("}")
-                .addStatement("\nreturn $N", "copied")
-                .addCode("} catch ($T e) {", Classes.EXCEPTION)
-                .addStatement("\nreturn null")
-                .addCode("} finally {")
-                .addStatement("\n$T.close($N)", Classes.REALMS, "temp")
-                .addCode("}\n")
-                .build());
-
-        methodSpecs.add(MethodSpec.methodBuilder("get")
-                .addAnnotation(Classes.NULLABLE)
-                .addModifiers(Modifier.PUBLIC)
-                .addParameter(Classes.REALM, "realm")
-                .returns(annotatedClass)
-                .addStatement("return get(applyCommandsToRealmQuery($N))", "realm")
-                .build());
-
-        methodSpecs.add(MethodSpec.methodBuilder("get")
-                .addModifiers(Modifier.PRIVATE)
-                .addParameter(ParameterizedTypeName.get(Classes.REALM_QUERY, annotatedClass), "realmQuery")
-                .returns(annotatedClass)
-                .addStatement("return $N.findFirst()", "realmQuery")
                 .build());
 
         methodSpecs.add(MethodSpec.methodBuilder("getAsync")

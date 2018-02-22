@@ -4,9 +4,6 @@ import com.squareup.javapoet.ClassName;
 
 public class Classes {
 
-    protected static final ClassName NULLABLE = ClassName.get("android.support.annotation", "Nullable");
-    protected static final ClassName DEPRECATED = ClassName.get("java.lang", "Deprecated");
-
     protected static final ClassName THROWABLE = ClassName.get("java.lang", "Throwable");
     protected static final ClassName EXCEPTION = ClassName.get("java.lang", "Exception");
 
