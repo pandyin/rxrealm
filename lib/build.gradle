@@ -7,7 +7,7 @@ dependencies {
 
     implementation 'com.google.auto.service:auto-service:1.0-rc4'
 
-    implementation 'com.google.guava:guava:24.0-android'
+    implementation 'com.google.guava:guava:23.5-android'
 }
 
 sourceCompatibility = "1.7"

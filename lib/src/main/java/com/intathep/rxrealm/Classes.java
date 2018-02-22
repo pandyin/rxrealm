@@ -17,8 +17,7 @@ public class Classes {
 
     protected static final ClassName JSON_OBJECT = ClassName.get("org.json", "JSONObject");
 
-    protected static final ClassName REALM_LOGGER = ClassName.get("com.intathep.android.rxrealm", "RealmLogger");
-    protected static final ClassName REALM_UTIL = ClassName.get("com.intathep.android.rxrealm", "RealmUtil");
+    protected static final ClassName REALMS = ClassName.get("com.intathep.android.rxrealm", "Realms");
     protected static final ClassName THREADS = ClassName.get("com.intathep.android.rxrealm", "Threads");
 
     protected static final ClassName OBSERVABLE = ClassName.get("rx", "Observable");
