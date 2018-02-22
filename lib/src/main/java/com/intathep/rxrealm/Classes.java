@@ -5,6 +5,7 @@ import com.squareup.javapoet.ClassName;
 public class Classes {
 
     protected static final ClassName NULLABLE = ClassName.get("android.support.annotation", "Nullable");
+    protected static final ClassName DEPRECATED = ClassName.get("java.lang", "Deprecated");
 
     protected static final ClassName THROWABLE = ClassName.get("java.lang", "Throwable");
     protected static final ClassName EXCEPTION = ClassName.get("java.lang", "Exception");
@@ -19,6 +20,8 @@ public class Classes {
 
     protected static final ClassName REALMS = ClassName.get("com.intathep.android.rxrealm", "Realms");
     protected static final ClassName THREADS = ClassName.get("com.intathep.android.rxrealm", "Threads");
+
+    protected static final ClassName FUNC0 = ClassName.get("rx.functions", "Func0");
 
     protected static final ClassName OBSERVABLE = ClassName.get("rx", "Observable");
     protected static final ClassName ASYNC_SUBJECT = ClassName.get("rx.subjects", "AsyncSubject");
