@@ -1,7 +1,10 @@
 package com.intathep.android.rxrealm.model;
 
+import com.intathep.rxrealm.RxRealm;
+
 import io.realm.RealmObject;
 
+@RxRealm
 public class Car extends RealmObject {
 
     private String model;
