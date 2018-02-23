@@ -66,7 +66,7 @@ OPERATIONS
 get operation:
 --------
 
-```fieldName + OperationName```
+platern: ```fieldName + OperationName```
 
 example: [MainActivity.java](https://github.com/pandyin/rxrealm/blob/master/example/src/main/java/com/intathep/android/rxrealm/MainActivity.java)
 
@@ -110,7 +110,7 @@ execute operations:
 set operation:
 --------
 
-```OperationName + fieldName```
+platern: ```OperationName + fieldName```
 
 example: [MainActivity.java](https://github.com/pandyin/rxrealm/blob/master/example/src/main/java/com/intathep/android/rxrealm/MainActivity.java)
 
