@@ -51,12 +51,13 @@ get operation:
 example:
 
 ```
-RxCar.get().idEqualTo(id)
-              .colorEqualTo(color)
-              .modelGreaterThan(model)
+RxCar.get().idEqualTo(id) //condition
+              .colorEqualTo(color)  //condition
+              .modelGreaterThan(model) //condition
+              .getAysnc(); //execute
 ```
 
-operations:
+condition operations:
 
 ```equalTo```
 
@@ -78,6 +79,14 @@ operations:
 
 ```first```
 
+execute operations:
+
+```getAysnc```
+
+```deleteAsync```
+
+```countAsync```
+
 set operation:
 --------
 
@@ -89,11 +98,16 @@ example:
 RxCar.set(id)
         .setColor(pink)
         .setModel(y2019)
+        .setAsync(); //execute
 ```
 
 operation:
 
 ```set```
+
+execute operations:
+
+```setAsync```
 
 
 EXAMPLE
