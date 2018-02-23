@@ -70,7 +70,7 @@ OPERATIONS
 get operation:
 --------
 
-<b>platern:</b>
+<b>format:</b>
 
 ```fieldName + OperationName```
 
@@ -120,7 +120,7 @@ RxCar.get().idEqualTo(id) //condition
 set operation:
 --------
 
-<b>platern:</b>
+<b>format:</b>
 
 ```OperationName + fieldName```
 
