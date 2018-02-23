@@ -11,7 +11,7 @@
 DOWNLOAD
 ========
 
-project build.gradle:
+<b>project build.gradle:</b>
 ```
 allprojects {
   repositories {
@@ -21,7 +21,7 @@ allprojects {
 }
 ```
 
-module build.gradle:
+<b>module build.gradle:</b>
 ```
 dependencies {
   compile 'com.github.pandyin:rxrealm:1.2.0'
@@ -37,7 +37,7 @@ USAGE
 
 - [RealmObject](https://realm.io/docs/java/4.3.3/api/io/realm/RealmObject.html) must define a primary key by using ```@PrimaryKey```
 
-example:
+<b>example:</b>
 
 [Car.java](https://github.com/pandyin/rxrealm/blob/master/example/src/main/java/com/intathep/android/rxrealm/model/Car.java)
 
@@ -58,7 +58,7 @@ GENERATED CLASS
 
 ...
 
-example:
+<b>example:</b>
 
 [RxCar.java](https://github.com/pandyin/rxrealm/blob/master/example/build/generated/source/apt/debug/com/intathep/rxrealm/realm/RxCar.java)
 
@@ -70,11 +70,11 @@ OPERATIONS
 get operation:
 --------
 
-platern:
+<b>platern:</b>
 
 ```fieldName + OperationName```
 
-example:
+<b>example:</b>
 
 [MainActivity.java](https://github.com/pandyin/rxrealm/blob/master/example/src/main/java/com/intathep/android/rxrealm/MainActivity.java)
 
@@ -85,7 +85,7 @@ RxCar.get().idEqualTo(id) //condition
               .getAysnc(); //execute
 ```
 
-condition operations:
+<b>condition operations:</b>
 
 ```equalTo``` Equal-to comparison.
 
@@ -105,26 +105,26 @@ condition operations:
 
 ```first``` Finds the first object that fulfills the query conditions.
 
-execute operations:
+<b>execute operations:</b>
 
-```getAysnc```
+```getAysnc``` Finds objects that fulfill the query conditions.
 
-```deleteAsync```
+```deleteAsync``` Deletes objects that fulfill the query conditions.
 
-```countAsync```
+```countAsync``` Counts objects that fulfill the query conditions.
 
-other operation:
+<b>other operation:</b>
 
-```edit```  
+```edit```  Edits objects that fulfill the query conditions with [Set operation](https://github.com/pandyin/rxrealm/#set-operation)
 
 set operation:
 --------
 
-platern:
+<b>platern:</b>
 
 ```OperationName + fieldName```
 
-example:
+<b>example:</b>
 
 [MainActivity.java](https://github.com/pandyin/rxrealm/blob/master/example/src/main/java/com/intathep/android/rxrealm/MainActivity.java)
 
@@ -135,10 +135,10 @@ RxCar.set(id)
         .setAsync(); //execute
 ```
 
-operation:
+<b>operation:</b>
 
 ```set```
 
-execute operations:
+<b>execute operations:</b>
 
 ```setAsync```
