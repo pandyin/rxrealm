@@ -43,7 +43,7 @@ public class Car extends RealmObject {
 OPERATIONS
 ========
 
-get operation (query, count and delete):
+get operation:
 --------
 
 ```fieldName + OperationName```
@@ -78,7 +78,7 @@ operations:
 
 ```first```
 
-set operation (create and update):
+set operation:
 --------
 
 ```OperationName + fieldName```
