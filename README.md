@@ -37,7 +37,9 @@ USAGE
 
 - [RealmObject](https://realm.io/docs/java/4.3.3/api/io/realm/RealmObject.html) must define a primary key by using ```@PrimaryKey```
 
-example: [Car.java](https://github.com/pandyin/rxrealm/blob/master/example/src/main/java/com/intathep/android/rxrealm/model/Car.java)
+example:
+
+[Car.java](https://github.com/pandyin/rxrealm/blob/master/example/src/main/java/com/intathep/android/rxrealm/model/Car.java)
 
 ```
 @RxRealm
@@ -56,7 +58,9 @@ GENERATED CLASS
 
 ...
 
-example: [RxCar.java](https://github.com/pandyin/rxrealm/blob/master/example/build/generated/source/apt/debug/com/intathep/rxrealm/realm/RxCar.java)
+example:
+
+[RxCar.java](https://github.com/pandyin/rxrealm/blob/master/example/build/generated/source/apt/debug/com/intathep/rxrealm/realm/RxCar.java)
 
 
 
@@ -66,9 +70,13 @@ OPERATIONS
 get operation:
 --------
 
-platern: ```fieldName + OperationName```
+platern:
 
-example: [MainActivity.java](https://github.com/pandyin/rxrealm/blob/master/example/src/main/java/com/intathep/android/rxrealm/MainActivity.java)
+```fieldName + OperationName```
+
+example:
+
+[MainActivity.java](https://github.com/pandyin/rxrealm/blob/master/example/src/main/java/com/intathep/android/rxrealm/MainActivity.java)
 
 ```
 RxCar.get().idEqualTo(id) //condition
@@ -110,9 +118,13 @@ execute operations:
 set operation:
 --------
 
-platern: ```OperationName + fieldName```
+platern:
 
-example: [MainActivity.java](https://github.com/pandyin/rxrealm/blob/master/example/src/main/java/com/intathep/android/rxrealm/MainActivity.java)
+```OperationName + fieldName```
+
+example:
+
+[MainActivity.java](https://github.com/pandyin/rxrealm/blob/master/example/src/main/java/com/intathep/android/rxrealm/MainActivity.java)
 
 ```
 RxCar.set(id)
