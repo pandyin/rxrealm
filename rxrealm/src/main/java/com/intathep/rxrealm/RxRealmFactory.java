@@ -32,6 +32,7 @@ public class RxRealmFactory {
     private static final String GETTER_SUFFIX = "Getter";
     private static final String SETTER_SUFFIX = "Setter";
     private static final String SINGLE_GETTER_SUFFIX = "SingleGetter";
+    private static final String SINGLE_SETTER_SUFFIX = "SingleSetter";
 
     private Element annotatedElement;
 
@@ -67,7 +68,7 @@ public class RxRealmFactory {
 
     private TypeSpec generateRx(String packageName, String className) {
         ClassName getterClass = ClassName.get(PACKAGE_NAME, className + GETTER_SUFFIX);
-        ClassName setterClass = ClassName.get(PACKAGE_NAME, className + SETTER_SUFFIX);
+        ClassName singleSetterClass = ClassName.get(PACKAGE_NAME, className + SINGLE_SETTER_SUFFIX);
         ClassName creatorClass = ClassName.get(PACKAGE_NAME, className + CREATOR_SUFFIX);
 
         List<MethodSpec> methodSpecs = new ArrayList<>();
@@ -101,7 +102,7 @@ public class RxRealmFactory {
             methodSpecs.add(MethodSpec.methodBuilder("set")
                     .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
                     .addParameter(pkType, pk)
-                    .returns(setterClass)
+                    .returns(singleSetterClass)
                     .addStatement("return $T.with().$NEqualTo($N).edit()", getterClass, pk, pk)
                     .build());
         }
@@ -758,8 +759,8 @@ public class RxRealmFactory {
 
     private TypeSpec generateSingleGetter(String packageName, String className) throws IOException {
         ClassName annotatedClass = ClassName.get(packageName, className);
-        ClassName setterClass = ClassName.get(PACKAGE_NAME, className + SETTER_SUFFIX);
         ClassName singleGetterClass = ClassName.get(PACKAGE_NAME, className + SINGLE_GETTER_SUFFIX);
+        ClassName singleSetterClass = ClassName.get(PACKAGE_NAME, className + SINGLE_SETTER_SUFFIX);
 
         List<MethodSpec> methodSpecs = new ArrayList<>();
 
@@ -798,8 +799,8 @@ public class RxRealmFactory {
                 if (isPrimaryKey(element)) {
                     methodSpecs.add(MethodSpec.methodBuilder("edit")
                             .addModifiers(Modifier.PUBLIC)
-                            .returns(setterClass)
-                            .addStatement("return $T.with($N)", setterClass, "commands")
+                            .returns(singleSetterClass)
+                            .addStatement("return $T.with($N)", singleSetterClass, "commands")
                             .build());
                     break;
                 }
@@ -906,6 +907,141 @@ public class RxRealmFactory {
                 .build();
     }
 
+    private TypeSpec generateSingleSetter(String packageName, String className) {
+        ClassName annotatedClass = ClassName.get(packageName, className);
+        ClassName singleSetterClass = ClassName.get(PACKAGE_NAME, className + SINGLE_SETTER_SUFFIX);
+
+        List<MethodSpec> methodSpecs = new ArrayList<>();
+
+        String pk = null;
+
+        for (Element element : annotatedElement.getEnclosedElements()) {
+            if (element.getKind() == ElementKind.FIELD) {
+                if (isPrimaryKey(element)) {
+                    pk = element.getSimpleName().toString();
+                    break;
+                }
+            }
+        }
+
+        if (pk == null) {
+            return null;
+        }
+
+        methodSpecs.add(MethodSpec.constructorBuilder()
+                .addModifiers(Modifier.PRIVATE)
+                .addParameter(ParameterizedTypeName.get(Classes.LIST, CommandFactory.COMMAND), "commands")
+                .addStatement("this.$N = $T.newLinkedHashMap()", "data", Classes.MAPS)
+                .addStatement("this.$N = $N", "commands", "commands")
+                .build());
+
+        methodSpecs.add(MethodSpec.methodBuilder("with")
+                .addModifiers(Modifier.PROTECTED, Modifier.STATIC)
+                .addParameter(ParameterizedTypeName.get(Classes.LIST, CommandFactory.COMMAND), "commands")
+                .returns(singleSetterClass)
+                .addStatement("return new $T($N)", singleSetterClass, "commands")
+                .build());
+
+        for (Element element : annotatedElement.getEnclosedElements()) {
+
+            if (element.getKind() == ElementKind.FIELD) {
+                TypeName type = TypeName.get(element.asType());
+
+                if (type.isPrimitive()
+                        || type.isBoxedPrimitive()
+                        || type.toString().equals(String.class.getName())) {
+
+                    if (isPrimaryKey(element)) {
+                        continue;
+                    }
+
+                    String fieldName = element.getSimpleName().toString();
+                    String capitalizedFieldName = element.getSimpleName().toString().substring(0, 1)
+                            .toUpperCase() + element.getSimpleName().toString().substring(1);
+
+                    methodSpecs.add(MethodSpec.methodBuilder("set" + capitalizedFieldName)
+                            .addModifiers(Modifier.PUBLIC)
+                            .addParameter(TypeName.get(element.asType()), fieldName)
+                            .returns(singleSetterClass)
+                            .addStatement("this.$N.put(\"$N\", $N)", "data", fieldName, fieldName)
+                            .addStatement("return this")
+                            .build());
+                }
+            }
+        }
+
+        methodSpecs.add(MethodSpec.methodBuilder("setAsync")
+                .addModifiers(Modifier.PUBLIC)
+                .returns(ParameterizedTypeName.get(Classes.OBSERVABLE, annotatedClass))
+                .addStatement("final $T asyncSubject = $T.create()",
+                        ParameterizedTypeName.get(Classes.ASYNC_SUBJECT, annotatedClass),
+                        Classes.ASYNC_SUBJECT)
+                .addCode("if ($T.isMainThread()) {", Classes.THREADS)
+                .addStatement("\n$T temp = null", Classes.REALM)
+                .addCode("try {")
+                .addStatement("\n$N = $T.get()", "temp", Classes.REALMS)
+                .addCode("$N.executeTransactionAsync(new $T.Transaction() {", "temp", Classes.REALM)
+                .addCode("\n@Override")
+                .addCode("\npublic void execute($T realm) {", Classes.REALM)
+                .addStatement("\n$N.onNext(applyChanges($N))", "asyncSubject", "realm")
+                .addCode("}")
+                .addCode("\n}, new $T.Transaction.OnSuccess() {", Classes.REALM)
+                .addCode("\n@Override")
+                .addCode("\npublic void onSuccess() {")
+                .addStatement("\n$N.onCompleted()", "asyncSubject")
+                .addCode("}")
+                .addCode("\n}, new $T.Transaction.OnError() {", Classes.REALM)
+                .addCode("\n@Override")
+                .addCode("\npublic void onError($T error) {", Classes.THROWABLE)
+                .addStatement("\n$N.onError($N)", "asyncSubject", "error")
+                .addCode("}")
+                .addStatement("\n})")
+                .addCode("} catch ($T e) {", Classes.EXCEPTION)
+                .addStatement("\n$N.onError($N)", "asyncSubject", "e")
+                .addCode("} finally {")
+                .addStatement("\n$T.close($N)", Classes.REALMS, "temp")
+                .addCode("}")
+                .addCode("\n} else {")
+                .addCode("\n$T.executeTransaction(new $T.BetterTransaction() {", Classes.REALMS, Classes.REALMS)
+                .addCode("\n@Override")
+                .addCode("\npublic void execute($T realm) throws $T {", Classes.REALM, Classes.EXCEPTION)
+                .addStatement("\n$N.onNext(applyChanges($N))", "asyncSubject", "realm")
+                .addStatement("$N.onCompleted()", "asyncSubject")
+                .addCode("}")
+                .addStatement("\n})")
+                .addCode("}")
+                .addStatement("\nreturn $N", "asyncSubject")
+                .build());
+
+        methodSpecs.add(MethodSpec.methodBuilder("applyChanges")
+                .addModifiers(Modifier.PRIVATE)
+                .addParameter(Classes.REALM, "realm")
+                .returns(annotatedClass)
+                .addStatement("$T realmQuery = $N.where($T.class)", ParameterizedTypeName.get(Classes.REALM_QUERY, annotatedClass), "realm", annotatedClass)
+                .addCode("for ($T command : $N) {", CommandFactory.COMMAND, "commands")
+                .addStatement("\n$N.execute($N)", "command", "realmQuery")
+                .addCode("}")
+                .addStatement("\n$T db = $N.findFirst()", annotatedClass, "realmQuery")
+                .addStatement("$N.put(\"$N\", db.get$N())", "data", pk, pk.substring(0, 1).toUpperCase() + pk.substring(1))
+                .addStatement("$T json = new $T($N)", Classes.JSON_OBJECT, Classes.JSON_OBJECT, "data")
+                .addStatement("return $N.copyFromRealm($N.createOrUpdateObjectFromJson($T.class, $N))", "realm", "realm", annotatedClass, "json")
+                .build());
+
+        List<FieldSpec> fieldSpecs = new ArrayList<>();
+
+        fieldSpecs.add(FieldSpec.builder(ParameterizedTypeName.get(Classes.LINKED_HASH_MAP, ClassName.get(String.class), ClassName.get(Object.class)), "data",
+                Modifier.PRIVATE, Modifier.FINAL).build());
+
+        fieldSpecs.add(FieldSpec.builder(ParameterizedTypeName.get(Classes.LIST, CommandFactory.COMMAND), "commands",
+                Modifier.PRIVATE).build());
+
+        return TypeSpec.classBuilder(className + SINGLE_SETTER_SUFFIX)
+                .addModifiers(Modifier.PUBLIC)
+                .addFields(fieldSpecs)
+                .addMethods(methodSpecs)
+                .build();
+    }
+
     void generate(Elements elementUtils, Filer filer) throws IOException, ClassNotFoundException {
         String packageName = elementUtils.getPackageOf(annotatedElement).toString();
         String className = annotatedElement.getSimpleName().toString();
@@ -928,16 +1064,22 @@ public class RxRealmFactory {
             JavaFile.builder(PACKAGE_NAME, singerGetter).build().writeTo(filer);
         }
 
-        TypeSpec creator = generateCreator(packageName, className);
-
-        if (creator != null) {
-            JavaFile.builder(PACKAGE_NAME, creator).build().writeTo(filer);
-        }
-
         TypeSpec setter = generateSetter(packageName, className);
 
         if (setter != null) {
             JavaFile.builder(PACKAGE_NAME, setter).build().writeTo(filer);
+        }
+
+        TypeSpec singerSetter = generateSingleSetter(packageName, className);
+
+        if (singerSetter != null) {
+            JavaFile.builder(PACKAGE_NAME, singerSetter).build().writeTo(filer);
+        }
+
+        TypeSpec creator = generateCreator(packageName, className);
+
+        if (creator != null) {
+            JavaFile.builder(PACKAGE_NAME, creator).build().writeTo(filer);
         }
     }
 }
