@@ -19,20 +19,39 @@ dependencies {
 ```
 
 
+
+USAGE
+========
+
+- [RealmObject](https://realm.io/docs/java/4.3.3/api/io/realm/RealmObject.html) must have ```@RxRealm``` annotation
+
+- [RealmObject](https://realm.io/docs/java/4.3.3/api/io/realm/RealmObject.html) must define a primary key by using ```@PrimaryKey```
+
+example:
+
+```
+@RxRealm
+public class Car extends RealmObject {
+
+    @PrimaryKey
+    private String id;
+    private String color;
+```
+
+
 OPERATIONS
 ========
 
-query operation platern:
+query operation:
 --------
 
 ```fieldName + OperationName```
 
-for example:
+example:
 
 ```idEqualTo```, ```nameEqualTo```, ```ageGreaterThan```
 
-available query operations:
---------
+operations:
 
 ```equalTo```
 
@@ -54,17 +73,16 @@ available query operations:
 
 ```first```
 
-update operation platern:
+update operation:
 --------
 
 ```OperationName + fieldName```
 
-for example:
+example:
 
 ```setId```, ```setName```, ```setAge```
 
-available update operations:
---------
+operation:
 
 ```set```
 
