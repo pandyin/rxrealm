@@ -1,4 +1,4 @@
-package com.intathep.android.rxrealm;
+package com.intathep.android.rxrealm.helper;
 
 import io.realm.Realm;
 import io.realm.RealmObject;

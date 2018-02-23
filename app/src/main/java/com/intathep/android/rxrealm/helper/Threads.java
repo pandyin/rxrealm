@@ -1,4 +1,4 @@
-package com.intathep.android.rxrealm;
+package com.intathep.android.rxrealm.helper;
 
 import android.os.Looper;
 
