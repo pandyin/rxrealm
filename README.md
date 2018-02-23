@@ -24,7 +24,7 @@ allprojects {
 module build.gradle:
 ```
 dependencies {
-  compile 'com.github.pandyin:rxrealm:1.1.2'
+  compile 'com.github.pandyin:rxrealm:1.2.0'
 }
 ```
 
