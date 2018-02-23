@@ -1,1 +1,1 @@
-include ':app', ':rxrealm'
+include ':example', ':rxrealm'
