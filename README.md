@@ -36,20 +36,25 @@ public class Car extends RealmObject {
     @PrimaryKey
     private String id;
     private String color;
+    private int model;
 ```
 
 
 OPERATIONS
 ========
 
-query operation:
+get operation (query, count and delete):
 --------
 
 ```fieldName + OperationName```
 
 example:
 
-```idEqualTo```, ```nameEqualTo```, ```ageGreaterThan```
+```
+RxCar.get().idEqualTo(id)
+              .colorEqualTo(color)
+              .modelGreaterThan(model)
+```
 
 operations:
 
@@ -73,14 +78,18 @@ operations:
 
 ```first```
 
-update operation:
+set operation (create and update):
 --------
 
 ```OperationName + fieldName```
 
 example:
 
-```setId```, ```setName```, ```setAge```
+```
+RxCar.set(id)
+        .setColor(pink)
+        .setModel(y2019)
+```
 
 operation:
 
