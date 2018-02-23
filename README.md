@@ -48,7 +48,7 @@ get operation:
 
 ```fieldName + OperationName```
 
-example:
+- example:
 
 ```
 RxCar.get().idEqualTo(id) //condition
@@ -57,7 +57,7 @@ RxCar.get().idEqualTo(id) //condition
               .getAysnc(); //execute
 ```
 
-condition operations:
+- condition operations:
 
 ```equalTo```
 
@@ -79,7 +79,7 @@ condition operations:
 
 ```first```
 
-execute operations:
+- execute operations:
 
 ```getAysnc```
 
@@ -92,7 +92,7 @@ set operation:
 
 ```OperationName + fieldName```
 
-example:
+- example:
 
 ```
 RxCar.set(id)
@@ -101,11 +101,11 @@ RxCar.set(id)
         .setAsync(); //execute
 ```
 
-operation:
+- operation:
 
 ```set```
 
-execute operations:
+- execute operations:
 
 ```setAsync```
 
