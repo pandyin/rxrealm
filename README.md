@@ -27,7 +27,7 @@ USAGE
 
 - [RealmObject](https://realm.io/docs/java/4.3.3/api/io/realm/RealmObject.html) must define a primary key by using ```@PrimaryKey```
 
-example:
+example: [Car.java](https://github.com/pandyin/rxrealm/blob/master/example/src/main/java/com/intathep/android/rxrealm/model/Car.java)
 
 ```
 @RxRealm
@@ -46,6 +46,8 @@ GENERATED CLASS
 
 ...
 
+example: [RxCar.java](https://github.com/pandyin/rxrealm/blob/master/example/build/generated/source/apt/debug/com/intathep/rxrealm/realm/RxCar.java)
+
 
 
 OPERATIONS
@@ -56,7 +58,7 @@ get operation:
 
 ```fieldName + OperationName```
 
-- example:
+example: [MainActivity.java](https://github.com/pandyin/rxrealm/blob/master/example/src/main/java/com/intathep/android/rxrealm/MainActivity.java)
 
 ```
 RxCar.get().idEqualTo(id) //condition
@@ -65,7 +67,7 @@ RxCar.get().idEqualTo(id) //condition
               .getAysnc(); //execute
 ```
 
-- condition operations:
+condition operations:
 
 ```equalTo```
 
@@ -87,7 +89,7 @@ RxCar.get().idEqualTo(id) //condition
 
 ```first```
 
-- execute operations:
+execute operations:
 
 ```getAysnc```
 
@@ -100,7 +102,7 @@ set operation:
 
 ```OperationName + fieldName```
 
-- example:
+example: [MainActivity.java](https://github.com/pandyin/rxrealm/blob/master/example/src/main/java/com/intathep/android/rxrealm/MainActivity.java)
 
 ```
 RxCar.set(id)
@@ -109,16 +111,10 @@ RxCar.set(id)
         .setAsync(); //execute
 ```
 
-- operation:
+operation:
 
 ```set```
 
-- execute operations:
+execute operations:
 
 ```setAsync```
-
-
-EXAMPLE
-========
-
-[MainActivity.java](https://github.com/pandyin/rxrealm/blob/master/example/src/main/java/com/intathep/android/rxrealm/MainActivity.java)
