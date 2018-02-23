@@ -40,6 +40,14 @@ public class Car extends RealmObject {
 ```
 
 
+
+GENERATED CLASS
+========
+
+...
+
+
+
 OPERATIONS
 ========
 
