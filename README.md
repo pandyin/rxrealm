@@ -97,7 +97,7 @@ example:
 ```
 RxCar.set(id)
         .setColor(pink)
-        .setModel(y2019)
+        .setModel(2019)
         .setAsync(); //execute
 ```
 
