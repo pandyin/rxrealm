@@ -87,25 +87,23 @@ RxCar.get().idEqualTo(id) //condition
 
 condition operations:
 
-```equalTo```
+```equalTo``` Equal-to comparison.
 
-```notEqualTo```
+```notEqualTo``` Not-equal-to comparison.
 
-```in```
+```in``` In comparison.
 
-```notIn```
+```notIn``` Not-in comparison.
 
-```lessThan```
+```lessThan``` Less-than comparison.
 
-```greaterThan```
+```greaterThan``` Greater-than comparison.
 
-```sortBy```
+```sortBy``` Sorted by specific field name.
 
-```or```
+```or``` Logical-or two conditions.
 
-```edit```
-
-```first```
+```first``` Finds the first object that fulfills the query conditions.
 
 execute operations:
 
@@ -114,6 +112,10 @@ execute operations:
 ```deleteAsync```
 
 ```countAsync```
+
+other operation:
+
+```edit```  
 
 set operation:
 --------
