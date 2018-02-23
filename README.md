@@ -72,7 +72,7 @@ get operation:
 
 <b>format:</b>
 
-```fieldName + OperationName```
+```fieldName + condition```
 
 <b>example:</b>
 
@@ -115,14 +115,14 @@ RxCar.get().idEqualTo(id) //condition
 
 <b>other operation:</b>
 
-```edit```  Edits objects that fulfill the query conditions with [Set operation](https://github.com/pandyin/rxrealm/#set-operation)
+```edit```  Updates objects that fulfill the query conditions with [Set operation](https://github.com/pandyin/rxrealm/#set-operation)
 
 set operation:
 --------
 
 <b>format:</b>
 
-```OperationName + fieldName```
+```"set" + fieldName```
 
 <b>example:</b>
 
@@ -135,10 +135,6 @@ RxCar.set(id)
         .setAsync(); //execute
 ```
 
-<b>operation:</b>
+<b>execute operation:</b>
 
-```set```
-
-<b>execute operations:</b>
-
-```setAsync```
+```setAsync```Updates objects that fulfill the query conditions with provided data.
