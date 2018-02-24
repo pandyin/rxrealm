@@ -53,7 +53,7 @@ public class Car extends RealmObject {
 
 
 
-GENERATED CLASS
+AUTO GENERATED CLASS
 ========
 
 ...
@@ -137,4 +137,4 @@ RxCar.set(id)
 
 <b>execute operation:</b>
 
-```setAsync```Updates objects that fulfill the query conditions with provided data.
+```setAsync``` Updates objects that fulfill the query conditions with provided data.
