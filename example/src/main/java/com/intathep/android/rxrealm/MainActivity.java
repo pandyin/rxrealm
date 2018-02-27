@@ -3,8 +3,8 @@ package com.intathep.android.rxrealm;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.intathep.android.rxrealm.helper.Realms;
 import com.intathep.android.rxrealm.model.Car;
+import com.intathep.android.util.Realms;
 import com.intathep.rxrealm.realm.RxCar;
 
 import java.util.List;
