@@ -346,8 +346,8 @@ public class RxRealmFactory {
                                 .addParameter(type, fieldName)
                                 .addStatement("$N.add(new $T(\"$N\", new $T($N)))", "commands", CommandFactory.EQUAL_TO_COMMAND, fieldName,
                                         ClassName.get(CommandFactory.EXECUTOR_PACKAGE_NAME, typeName + "Executor"), fieldName)
-                                .returns(singerGetterClass)
-                                .addStatement("return $T.with($N)", singerGetterClass, "commands")
+                                .returns(getterClass)
+                                .addStatement("return this")
                                 .build());
                     } else {
                         methodSpecs.add(MethodSpec.methodBuilder(fieldName + "EqualTo")
